@@ -7,9 +7,9 @@
 <title>BeautybyAD</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Cinzel:wght@500;600&display=swap">
 <style>
-/* Layout: scroll-driven editorial stage — orbit of faces → scatter → horizontal (faces) reel → full-bleed cover → shop index. Fixed chrome: round back button, stacked CTAs, floating nav pill. */
+/* Layout: scroll-driven editorial stage — orbit of faces → scatter → horizontal (faces) reel → full-bleed cover → shop index. Fixed chrome: brand lockup, story link + shop pill, glass dock with sliding indicator and scroll progress. */
 :root{
   --ground:#e4dcdc;      /* blush-tinted grey stage */
   --paper:#ffffff;
@@ -19,6 +19,7 @@
   --muted:#8a7e80;
   --display:"Hanken Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
   --serif:"Instrument Serif","Times New Roman",serif;
+  --logo:"Cinzel","Trajan Pro",Georgia,serif;
   --gut:max(16px,env(safe-area-inset-left,0px));
   --gutR:max(16px,env(safe-area-inset-right,0px));
   color-scheme:light;
@@ -32,19 +33,41 @@ button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--wine);outline-offset:3px}
 
 /* ---------- fixed chrome ---------- */
-.back{position:fixed;z-index:50;top:calc(14px + env(safe-area-inset-top,0px));left:calc(14px + env(safe-area-inset-left,0px));width:80px;height:80px;border-radius:50%;border:0;background:#262224;color:#fff;display:grid;place-items:center;transition:transform .3s}
-.back:hover{transform:scale(1.06)}
-.back svg{width:30px;height:30px}
-.ctas{position:fixed;z-index:50;top:calc(10px + env(safe-area-inset-top,0px));right:calc(8px + env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:4px;width:150px}
-.ctas a{display:block;text-align:center;text-decoration:none;font-size:11px;letter-spacing:-.01em;padding:5px 8px;color:#fff;background:var(--wine);transition:background .2s}
-.ctas a+a{background:var(--ink)}
-.ctas a:hover{background:#000}
-.ctas a+a:hover{background:var(--wine)}
-.navpill{position:fixed;z-index:50;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--paper);display:flex;align-items:center;gap:6px;padding:4px;font-size:11px;letter-spacing:-.02em;white-space:nowrap;max-width:calc(100vw - 24px)}
-.navpill .tag{background:var(--wine);color:#fff;padding:4px 7px;text-decoration:none;margin-right:18px}
-.navpill a.l{text-decoration:none;padding:2px 0}
-.navpill a.l.on,.navpill a.l:hover{color:var(--wine)}
-.navpill .sl{color:var(--muted);padding:0 4px}
+/* brand lockup (top-left) */
+.brand{position:fixed;z-index:50;top:calc(16px + env(safe-area-inset-top,0px));left:calc(18px + env(safe-area-inset-left,0px));display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--wine)}
+.brand .mono{width:46px;height:46px;flex:none;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.brand:hover .mono{transform:rotate(-8deg) scale(1.05)}
+.brand .bw{display:flex;flex-direction:column;line-height:1}
+.brand .bw b{font-family:var(--logo);font-weight:600;font-size:17px;letter-spacing:.06em}
+.brand .bw small{font-family:var(--display);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);opacity:.6;margin-top:5px}
+/* top-right actions */
+.topr{position:fixed;z-index:50;top:calc(18px + env(safe-area-inset-top,0px));right:calc(18px + env(safe-area-inset-right,0px));display:flex;align-items:center;gap:18px}
+.story{font-size:12px;letter-spacing:-.01em;text-decoration:none;color:var(--ink);position:relative;padding:4px 0}
+.story::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform:scaleX(.25);transform-origin:left;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.story:hover::after{transform:scaleX(1)}
+.story em{font-family:var(--serif);font-size:15px;color:var(--wine)}
+.shopbtn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:#fff;background:var(--wine);border-radius:999px;padding:6px 6px 6px 18px;font-size:12px;letter-spacing:-.01em;isolation:isolate}
+.shopbtn::before{content:"";position:absolute;inset:0;background:var(--ink);transform:translateY(101%);transition:transform .45s cubic-bezier(.2,.7,.2,1);z-index:-1}
+.shopbtn:hover::before{transform:none}
+.shopbtn i{font-style:normal;width:28px;height:28px;border-radius:50%;background:#fff;color:var(--wine);display:grid;place-items:center;font-size:14px;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.shopbtn:hover i{transform:rotate(-45deg)}
+/* floating dock (bottom) */
+.dock{position:fixed;z-index:50;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px;border-radius:999px;background:rgba(255,250,250,.72);-webkit-backdrop-filter:blur(18px) saturate(1.4);backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 10px 40px -12px rgba(60,10,20,.35),inset 0 0 0 1px rgba(255,255,255,.7);max-width:calc(100vw - 24px)}
+.dock-prog{position:absolute;left:22px;right:22px;top:-7px;height:2px;border-radius:2px;background:rgba(123,28,44,.15);overflow:hidden}
+.dock-prog span{display:block;height:100%;width:100%;background:var(--wine);transform-origin:left;transform:scaleX(0)}
+.dock-home{width:38px;height:38px;flex:none;border-radius:50%;background:var(--wine);color:#fff;display:grid;place-items:center}
+.dock-home .mono{width:24px;height:24px}
+.dock-links{position:relative;display:flex;align-items:center;gap:2px}
+.dock-ind{position:absolute;top:0;bottom:0;left:0;width:0;border-radius:999px;background:var(--ink);transition:transform .5s cubic-bezier(.2,.8,.2,1),width .5s cubic-bezier(.2,.8,.2,1);z-index:0}
+.dock-links a{position:relative;z-index:1;text-decoration:none;font-size:12.5px;letter-spacing:-.02em;padding:9px 14px;border-radius:999px;color:var(--ink);white-space:nowrap;transition:color .3s}
+.dock-links a sup{font-size:8.5px;margin-left:2px;color:var(--wine);font-variant-numeric:tabular-nums;transition:color .3s}
+.dock-links a:hover{color:var(--wine)}
+.dock-links a.on{color:#fff}
+.dock-links a.on sup{color:var(--blush)}
+.dock-bag{flex:none;display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12.5px;padding:6px 6px 6px 14px;border-radius:999px;border:1px solid rgba(21,16,18,.14);color:var(--ink)}
+.dock-bag b{min-width:26px;height:26px;padding:0 6px;border-radius:999px;background:var(--blush);color:var(--wine);display:grid;place-items:center;font-weight:600;font-size:11px;font-variant-numeric:tabular-nums;transition:transform .3s}
+.dock-bag b.bump{transform:scale(1.25)}
+.dock-bag:hover{border-color:var(--wine)}
 
 /* ---------- 1. orbit ---------- */
 .orbit{height:280vh;position:relative}
@@ -53,15 +76,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .wordmark i{font-style:normal;font-weight:400}
 .thumb{position:absolute;left:50%;top:50%;width:var(--tw,80px);aspect-ratio:1;margin:calc(var(--tw,80px)/-2) 0 0 calc(var(--tw,80px)/-2);background:var(--paper);padding:5px;will-change:transform;box-shadow:0 1px 0 rgba(0,0,0,.04)}
 .thumb img{width:100%;height:100%;object-fit:cover;object-position:50% 25%}
-.orbit-hint{position:absolute;left:50%;bottom:72px;transform:translateX(-50%);font-size:11px;color:var(--muted);letter-spacing:.02em;text-align:center;transition:opacity .3s}
 .orbit-cap{position:absolute;left:var(--gut);bottom:72px;font-size:11px;max-width:220px;color:var(--ink)}
 .orbit-cap b{font-weight:500;color:var(--wine)}
 
 /* ---------- 2. faces reel ---------- */
 .reel{height:300vh;position:relative}
 .reel .stage{display:flex;flex-direction:column;justify-content:center}
-.reel h2{position:absolute;top:calc(4px + env(safe-area-inset-top,0px));left:var(--gut);margin:0;font-weight:500;font-size:clamp(44px,6vw,86px);letter-spacing:-.065em;line-height:1}
-.reel .sub{position:absolute;top:calc(22px + env(safe-area-inset-top,0px));left:calc(var(--gut) + clamp(190px,23vw,330px));font-size:11px;max-width:240px;color:var(--ink)}
+.reel h2{position:absolute;top:calc(78px + env(safe-area-inset-top,0px));left:var(--gut);margin:0;font-weight:500;font-size:clamp(44px,6vw,86px);letter-spacing:-.065em;line-height:1}
+.reel .sub{position:absolute;top:calc(96px + env(safe-area-inset-top,0px));left:calc(var(--gut) + clamp(190px,23vw,330px));font-size:11px;max-width:240px;color:var(--ink)}
 .reel .sub span{color:var(--wine)}
 .track{display:flex;gap:11px;padding-left:var(--gut);will-change:transform}
 .card{flex:0 0 auto;width:clamp(220px,23.5vw,340px);margin:0;cursor:pointer;background:none;border:0;padding:0;text-align:left}
@@ -143,21 +165,27 @@ footer{padding-block:80px 120px;border-top:1px solid rgba(21,16,18,.18)}
 .colophon b{color:var(--wine);font-weight:500}
 
 /* toast */
-.toast{position:fixed;z-index:60;left:50%;bottom:calc(58px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--ink);color:#fff;font-size:11px;padding:6px 10px;opacity:0;transition:.25s;pointer-events:none}
+.toast{position:fixed;z-index:60;left:50%;bottom:calc(82px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--ink);color:#fff;font-size:11px;padding:6px 10px;opacity:0;transition:.25s;pointer-events:none}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
 @media (max-width:760px){
-  .back{width:52px;height:52px}
-  .back svg{width:22px;height:22px}
-  .ctas{width:124px}
-  .ctas a{font-size:10px}
-  .navpill{font-size:10px;gap:4px}
-  .navpill .tag{margin-right:6px}
-  .navpill .hide-s{display:none}
-  .orbit-hint{display:none}
+  .brand .mono{width:36px;height:36px}
+  .brand .bw b{font-size:14px}
+  .brand .bw small{display:none}
+  .story{display:none}
+  .shopbtn{padding:4px 4px 4px 12px;font-size:11px;gap:8px}
+  .shopbtn span{display:none}
+  .shopbtn::after{content:"Shop";order:-1}
+  .shopbtn i{width:24px;height:24px}
+  .dock{gap:3px;padding:4px}
+  .dock-home{width:32px;height:32px}
+  .dock-links a{padding:8px 9px;font-size:11.5px}
+  .dock-links .hide-s{display:none}
+  .dock-bag{padding:4px 4px 4px 10px;font-size:11.5px;gap:6px}
+  .dock-bag b{min-width:22px;height:22px}
   .orbit-cap{bottom:84px}
-  .reel h2{top:64px}
-  .reel .sub{left:var(--gut);top:calc(64px + 62px)}
+  .reel h2{top:70px}
+  .reel .sub{left:var(--gut);top:132px}
   .card{width:62vw}
   .cover .lines{top:auto;bottom:120px}
   .cover .num{top:auto;bottom:150px;transform:none}
@@ -177,21 +205,24 @@ footer{padding-block:80px 120px;border-top:1px solid rgba(21,16,18,.18)}
 <body>
 
 
-<button class="back" id="toTop" aria-label="Back to top">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-</button>
+<a class="brand" href="#top" aria-label="Beauty by AD, back to top"><svg class="mono" viewBox="60 60 360 360" aria-hidden="true"><path d="M185 125 L80 355 M80 355 L268 355" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square"/><path d="M172 134 L194 116 L312 402 L284 404 Z" fill="currentColor"/><path d="M190 72 C330 58 420 140 406 236 C394 312 332 352 262 361 L262 349 C322 334 362 290 368 226 C374 150 312 96 204 88 Z" fill="currentColor"/></svg><span class="bw"><b>Beauty by aD</b><small>Est. 2016 · Lagos</small></span></a>
 
-<nav class="ctas" aria-label="Quick links">
-  <a href="#shop">Shop the collection</a>
-  <a href="#decade">More about BeautybyAD</a>
+<nav class="topr" aria-label="Quick links">
+  <a class="story" href="#decade">Our <em>story</em></a>
+  <a class="shopbtn" href="#shop"><span>Shop the collection</span><i aria-hidden="true">↗</i></a>
 </nav>
 
-<nav class="navpill" aria-label="Main">
-  <a class="tag" href="#top">BeautybyAD®</a>
-  <a class="l on" href="#faces" data-sec="faces">Faces (5)</a><span class="sl">/</span>
-  <a class="l" href="#shop" data-sec="shop">Shop (11)</a><span class="sl hide-s">/</span>
-  <a class="l hide-s" href="#join" data-sec="join">Become a distributor</a><span class="sl">/</span>
-  <a class="l" href="#shop" id="bagLink">Bag (<span id="bagN">0</span>)</a>
+<nav class="dock" aria-label="Main">
+  <div class="dock-prog" aria-hidden="true"><span id="dockProg"></span></div>
+  <a class="dock-home" href="#top" aria-label="Back to top"><svg class="mono" viewBox="60 60 360 360" aria-hidden="true"><path d="M185 125 L80 355 M80 355 L268 355" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="square"/><path d="M172 134 L194 116 L312 402 L284 404 Z" fill="currentColor"/><path d="M190 72 C330 58 420 140 406 236 C394 312 332 352 262 361 L262 349 C322 334 362 290 368 226 C374 150 312 96 204 88 Z" fill="currentColor"/></svg></a>
+  <div class="dock-links" id="dockLinks">
+    <span class="dock-ind" id="dockInd" aria-hidden="true"></span>
+    <a href="#faces" data-sec="faces">Faces<sup>05</sup></a>
+    <a href="#shop" data-sec="shop">Shop<sup>11</sup></a>
+    <a href="#decade" data-sec="decade" class="hide-s">Story<sup>10</sup></a>
+    <a href="#join" data-sec="join">Stockists</a>
+  </div>
+  <a class="dock-bag" href="#shop" aria-label="Bag">Bag<b id="bagN">0</b></a>
 </nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -203,7 +234,6 @@ footer{padding-block:80px 120px;border-top:1px solid rgba(21,16,18,.18)}
       <div class="wordmark" id="wm">Beautyby<i>(AD)</i></div>
       <div id="ring"></div>
       <p class="orbit-cap"><b>Face of BeautybyAD 2026</b><br>Five finalists. One crown. Ten years of beauty made in Lagos.</p>
-      <p class="orbit-hint" id="hint">Scroll</p>
     </div>
   </section>
 
@@ -393,7 +423,7 @@ $('#pvDesc').textContent = PRODUCTS[0].d;
 $('#pvImg').src = IMG[PRODUCTS[0].img]; $('#pvImg').alt = PRODUCTS[0].n;
 let toastT;
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 1800); }
-$('#pvAdd').addEventListener('click', () => { bag++; $('#bagN').textContent = bag; toast(`Added ${PRODUCTS[current].n} to bag`); });
+$('#pvAdd').addEventListener('click', () => { bag++; const bn = $('#bagN'); bn.textContent = bag; bn.classList.add('bump'); setTimeout(() => bn.classList.remove('bump'), 250); toast(`Added ${PRODUCTS[current].n} to bag`); });
 
 /* ---- form ---- */
 $('#joinForm').addEventListener('submit', e => {
@@ -404,15 +434,32 @@ $('#joinForm').addEventListener('submit', e => {
   ok.textContent = `Thanks, ${f.name.value.trim().split(' ')[0]}. Your enquiry is ready for the BeautybyAD team.`;
 });
 
-$('#toTop').addEventListener('click', () => window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'}));
+document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const id = a.getAttribute('href').slice(1); const el = id === 'top' ? document.body : document.getElementById(id);
+  if (!el) return; e.preventDefault();
+  window.scrollTo({top: id === 'top' ? 0 : el.offsetTop, behavior: reduce ? 'auto' : 'smooth'});
+}));
 
 /* ---- scroll engine ---- */
 const orbit = $('#orbit'), reel = $('#faces'), cover = $('#cover');
-const wm = $('#wm'), hint = $('#hint');
+const wm = $('#wm');
 const coverBg = $('#coverBg'), coverWm = $('#coverWm'), coverNum = $('#coverNum');
 const lines = [...document.querySelectorAll('#coverLines span')];
 const prog = el => { const r = el.getBoundingClientRect(); return clamp(-r.top / (r.height - innerHeight)); };
 let spin = 0, last = performance.now();
+const dockProg = $('#dockProg'), dockInd = $('#dockInd');
+let navOn = null;
+function placeInd(){
+  const links = [...document.querySelectorAll('#dockLinks a')];
+  let a = links.find(l => l.dataset.sec === navOn && l.offsetParent !== null);
+  if (!a && navOn === 'decade') a = links.find(l => l.dataset.sec === 'shop');
+  links.forEach(l => l.classList.toggle('on', l === a));
+  if (!a) return;
+  dockInd.style.width = a.offsetWidth + 'px';
+  dockInd.style.transform = `translateX(${a.offsetLeft}px)`;
+}
+addEventListener('resize', placeInd);
+document.fonts && document.fonts.ready.then(placeInd);
 
 function frame(now){
   const dt = Math.min(64, now - last); last = now;
@@ -438,7 +485,6 @@ function frame(now){
   wm.style.filter = `blur(${7 - sc * 7}px)`;
   wm.style.opacity = .28 + sc * .55;
   wm.style.transform = `translate(-50%,-50%) scale(${1 + sc * .25})`;
-  hint.style.opacity = po > .05 ? 0 : 1;
 
   /* reel: horizontal travel */
   const pr = prog(reel);
@@ -458,9 +504,10 @@ function frame(now){
 
   /* nav state */
   const y = scrollY + H * .4;
-  const secs = [['faces', orbit.offsetTop], ['shop', $('#shop').offsetTop], ['join', $('#join').offsetTop]];
+  const secs = [['faces', orbit.offsetTop], ['shop', $('#shop').offsetTop], ['decade', $('#decade').offsetTop], ['join', $('#join').offsetTop]];
   let on = 'faces'; secs.forEach(([k,t]) => { if (y >= t) on = k; });
-  document.querySelectorAll('.navpill a.l[data-sec]').forEach(a => a.classList.toggle('on', a.dataset.sec === on));
+  if (on !== navOn) { navOn = on; placeInd(); }
+  dockProg.style.transform = `scaleX(${clamp(scrollY / (document.documentElement.scrollHeight - H))})`;
 
   requestAnimationFrame(frame);
 }
